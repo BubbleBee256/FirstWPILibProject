@@ -4,9 +4,12 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -15,7 +18,13 @@ public class WheelSubsystem extends SubsystemBase {
     private static volatile WheelSubsystem instance;
     private static Object mutex = new Object();
 
-    private CANSparkMax motor;
+    private final int DRIVING_MOTOR_ID = 0;
+    private final int TURNING_MOTOR_ID = 1;
+
+    private CANSparkMax drivingMotor = new CANSparkMax(DRIVING_MOTOR_ID, MotorType.kBrushless);
+    private CANSparkMax turningMotor = new CANSparkMax(TURNING_MOTOR_ID, MotorType.kBrushless);
+    private CANcoder motorInfo = new CANcoder(TURNING_MOTOR_ID);
+    private StatusSignal<Double> statusSignal = motorInfo.getAbsolutePosition();
 
 
     public static WheelSubsystem getInstance() {
@@ -32,18 +41,25 @@ public class WheelSubsystem extends SubsystemBase {
         return instance;
     }
 
-
     /** Creates a new ExampleSubsystem. */
     public WheelSubsystem() {
         super("ExampleSubsystem");
-
-        motor = new CANSparkMax(2, MotorType.kBrushless);
     }
-
 
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        motor.set(0.25);
+    }
+    
+    public void setDrivingMotorSpeed(double speed) {
+        drivingMotor.set(speed);
+    }
+
+    public void setTurningMotorSpeed(double speed) {
+        turningMotor.set(speed);
+    }
+
+    public double getMotorPosition() {
+        return Units.radiansToDegrees(statusSignal.getValue());
     }
 }
