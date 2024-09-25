@@ -18,12 +18,13 @@ public class WheelSubsystem extends SubsystemBase {
     private static volatile WheelSubsystem instance;
     private static Object mutex = new Object();
 
-    private final int DRIVING_MOTOR_ID = 0;
-    private final int TURNING_MOTOR_ID = 1;
+    private final int DRIVING_MOTOR_ID = 3;
+    private final int TURNING_MOTOR_ID = 2;
+    private final int CANCODER_ID = 10;
 
     private CANSparkMax drivingMotor = new CANSparkMax(DRIVING_MOTOR_ID, MotorType.kBrushless);
     private CANSparkMax turningMotor = new CANSparkMax(TURNING_MOTOR_ID, MotorType.kBrushless);
-    private CANcoder motorInfo = new CANcoder(TURNING_MOTOR_ID);
+    private CANcoder motorInfo = new CANcoder(CANCODER_ID, "swerve");
     private StatusSignal<Double> statusSignal = motorInfo.getAbsolutePosition();
 
 

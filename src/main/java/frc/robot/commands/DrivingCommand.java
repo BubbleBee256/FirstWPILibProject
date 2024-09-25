@@ -15,7 +15,7 @@ public class DrivingCommand extends Command {
      * Creates a new ExampleCommand.
      */
     public DrivingCommand(double speed) {
-        setName("ExampleCommand");
+        setName("DrivingCommand");
         // Use addRequirements() here to declare subsystem dependencies.
         addRequirements(WheelSubsystem.getInstance());
         this.speed = speed;
